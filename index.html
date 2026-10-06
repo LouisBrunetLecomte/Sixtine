@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For Sixtine</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f3ece0;
+    --ink: #2b2420;
+    --soft: #7a6c60;
+    --line: #d9cdbb;
+    --accent: #8c2f2a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #1c1815;
+      --ink: #ece2d2;
+      --soft: #a39482;
+      --line: #3b332c;
+      --accent: #d9926f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100dvh;
+    background: var(--paper);
+    color: var(--ink);
+    font: 20px/1.5 "EB Garamond", Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 28px 22px 60px;
+  }
+  .page { max-width: 32rem; margin: 0 auto; }
+  .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-style: italic; color: var(--soft); font-size: 17px;
+    border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 44px;
+  }
+  main { animation: in .6s ease both; }
+  @keyframes in { from { opacity: 0; } to { opacity: 1; } }
+
+  .label { font-style: italic; color: var(--accent); font-size: 18px; margin: 0 0 6px; }
+  h1 { font-weight: 500; font-size: 40px; line-height: 1.1; margin: 0 0 22px; }
+  h2 { font-weight: 500; font-size: 30px; line-height: 1.2; margin: 0 0 18px; }
+  p { margin: 0 0 16px; }
+  .soft { color: var(--soft); font-size: 18px; }
+  .q { font-size: 23px; line-height: 1.45; margin: 0 0 30px; white-space: pre-line; }
+
+  form { display: flex; align-items: flex-end; gap: 14px; }
+  input {
+    flex: 1; min-width: 0;
+    font: inherit; font-size: 22px; color: var(--ink);
+    background: transparent; border: 0; border-bottom: 1.5px solid var(--ink);
+    border-radius: 0; padding: 6px 2px; outline: none;
+  }
+  input::placeholder { color: var(--soft); opacity: .6; font-style: italic; }
+  input.right { color: var(--accent); border-color: var(--accent); }
+  button {
+    font: inherit; font-size: 19px; cursor: pointer;
+    background: var(--ink); color: var(--paper);
+    border: 0; border-radius: 3px; padding: 9px 18px;
+  }
+  button:active { opacity: .8; }
+  button.wide { display: block; width: 100%; padding: 14px; margin-top: 30px; }
+  button.link { background: none; color: var(--soft); padding: 0; font-size: 16px; font-style: italic; text-decoration: underline; text-underline-offset: 3px; }
+
+  .note { min-height: 28px; margin-top: 14px; font-style: italic; color: var(--soft); }
+  .note.yes { color: var(--accent); }
+  .hint { margin-top: 10px; font-style: italic; color: var(--soft); font-size: 18px; }
+  .hint::before { content: "Hint: "; color: var(--accent); }
+  .nudge { animation: nudge .35s; }
+  @keyframes nudge { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+  .words { margin: 0 0 22px; font-size: 24px; font-style: italic; color: var(--accent); }
+  .words span + span::before { content: " · "; color: var(--soft); }
+
+  .clock { font-size: 64px; font-weight: 500; letter-spacing: .02em; font-variant-numeric: tabular-nums lining-nums; margin: 10px 0 18px; }
+
+  .arrow { font-size: 72px; line-height: 1; color: var(--accent); margin: 0 0 18px; }
+  .step { font-size: 27px; line-height: 1.35; margin: 0 0 10px; }
+  .step b { font-weight: 600; }
+  .row { display: flex; gap: 10px; margin-top: 34px; }
+  .row button { flex: 1; padding: 14px; }
+  .row button.back { flex: 0 0 64px; background: none; color: var(--ink); border: 1px solid var(--line); }
+
+  .letter { font-style: italic; font-size: 22px; line-height: 1.55; border-left: 2px solid var(--accent); padding-left: 16px; margin: 26px 0; white-space: pre-line; }
+  footer { max-width: 32rem; margin: 60px auto 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top"><span>For Sixtine</span><span id="progress"></span></div>
+  <main id="app"></main>
+</div>
+<footer><button class="link" id="reset">start over</button></footer>
+
+<script>
+/* Answers are stored as salted hashes so reading the source spoils nothing. */
+const H = {"french":["23a7648f9b603327","744d7fb8e558a06a","8d8fdca12b7f0997","a201c6e017b67a04","d339297d776cb482"],"cosy":["7becf8f9b5863cfc","82a2cca27e1cc5a9","9f06b535fa4e5ce7","f3efbe16cb588635"],"date":["3613dc27b777e8f1","8b4c89b97abba8c9"],"18":["79124421da27c9c5","a616206770df3def"],"months":["5c9b3bfb56da5c05","ea3c1b113893738d"],"rugby":["533c53f00c242f1a"],"moto":["10b3838e0e37e7ec","4cf80eede5489ed7","9b4d2ef82b5460c5","b7106f9d3d950895","d9d1dff93893d9bd","eadc4481e4fef5c9","f41c20add6a4482f"],"fort":["0930e4b8b423e27a","96fb0799892faae5","c2c4946eafece64f","d8fdc7d8b3dcd3d2"],"couple":["5d424d57e3cb476c","8ce6d73a6110a41a"],"dindin":["a44d0c40acbfee2a"],"lou":["12d362f590d83a23","237d321b8955e376","860285e888eb2ab0","9f1a58e4c92f9e10"],"gastro":["366e27235400401f","44ed1b825b4eb94e","484f67e30bfd4dd7","9fd4fbde43bbe466","b809c85c55d200ca","bd0638fb0e89c593","d0a0b12527e9b984","eb1d51e11fea29c7","f756c26baf359531"]};
+
+/* Chapter three opens at 19:00 Paris time on 7 October 2026 (17:00 UTC).
+   The directions are not in this file: route.json is only published shortly before. */
+const RELEASE = Date.UTC(2026, 9, 7, 17, 0, 0);
+
+const STEPS = [
+  { type: "intro" },
+
+  { type: "q", chapter: "Chapter one", key: "french",
+    text: "Croissants at breakfast, butter in everything,\nand a kitchen the whole world tries to copy.\nWhat cuisine is waiting for you?",
+    hints: ["One word. It's also a language.", "Bonjour, ça va ?"] },
+
+  { type: "q", chapter: "Chapter one", key: "cosy",
+    text: "Soft light, warm walls, a table just for two.\nThe English word for that snug, wrapped-in-a-blanket feeling.\nWhat kind of place is it?",
+    hints: ["Four letters. The British spell it with an S, the Americans with a Z.", "C _ _ Y"] },
+
+  { type: "q", chapter: "Chapter one", key: "gastro", any: true,
+    text: "Not a quick bite. Not a simple bistro.\nIn Greek, my name means \"the law of the stomach\":\nthe art of eating very, very well.\nWhat kind of restaurant is it?",
+    hints: ["Starts like the word for a stomach bug in French…", "G A S T R O _ _ _ _ _"] },
+
+  { type: "reveal1" },
+
+  { type: "q", chapter: "Chapter two", key: "rugby", any: true,
+    text: "Let's start at the very beginning.\nWhat kind of party were we at when we met?",
+    hints: ["Think of an oval ball.", "R _ _ _ Y"] },
+
+  { type: "q", chapter: "Chapter two", key: "lou", any: true,
+    text: "And whose rugby party was it?\nName the Lyon club.",
+    hints: ["Three letters. Say it out loud and it sounds like a wolf in French.", "L _ _"] },
+
+  { type: "q", chapter: "Chapter two", key: "moto", any: true,
+    text: "Our first date.\nHow did I take you there?",
+    hints: ["Two wheels, a helmet, and you holding on tight.", "M _ _ _ R B _ K E"] },
+
+  { type: "q", chapter: "Chapter two", key: "fort", any: true,
+    text: "And where did it take us?",
+    hints: ["In Saint-Genis-Laval, a place that was built for soldiers.", "Fort de C _ _ _-L _ _ _ _ _ _ _"] },
+
+  { type: "q", chapter: "Chapter two", key: "date", date: true,
+    text: "On which date did we share our very first kiss?",
+    hints: ["It was a very special day for you, not a random one.", "Your 18th birthday."] },
+
+  { type: "q", chapter: "Chapter two", key: "18",
+    text: "How old were you that day?",
+    hints: ["Officially an adult."] },
+
+  { type: "q", chapter: "Chapter two", key: "couple", date: true,
+    text: "And on which date did we officially become a couple?",
+    hints: ["A little over a month after that first kiss.", "Mid November 2023."] },
+
+  { type: "q", chapter: "Chapter two", key: "months", any: true,
+    text: "So, how many full months have we been together today?",
+    hints: ["From 14 November 2023 to today…", "Almost 35, but not quite yet."] },
+
+  { type: "q", chapter: "Chapter two", key: "dindin", any: true,
+    text: "Last one.\nWhat's my nickname for you?",
+    hints: ["Two identical syllables.", "D _ _ D _ _"] },
+
+  { type: "reveal2" },
+  { type: "road" },
+  { type: "end" },
+];
+const QUESTIONS = STEPS.filter(s => s.type === "q");
+
+/* ---------- state ---------- */
+let state = { i: 0, navStep: -1 };
+try { const s = JSON.parse(localStorage.getItem("sq2")); if (s) state = s; } catch {}
+const save = () => { try { localStorage.setItem("sq2", JSON.stringify(state)); } catch {} };
+
+/* ---------- time: trust the server clock, not the phone's ---------- */
+let clockOffset = 0;
+async function syncClock() {
+  try {
+    const r = await fetch(location.href.split("#")[0], { method: "HEAD", cache: "no-store" });
+    const d = Date.parse(r.headers.get("date"));
+    if (d) clockOffset = d - Date.now();
+  } catch {}
+}
+const now = () => Date.now() + clockOffset;
+
+/* ---------- helpers ---------- */
+const $app = document.getElementById("app");
+const strip = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+const norm = s => strip(s).replace(/[^a-z0-9]/g, "");
+async function hash(s) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("sixtine:" + norm(s)));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+}
+const MONTHS = ["january","february","march","april","may","june","july","august","september","october","november","december"];
+const MOIS = ["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
+function parseDate(raw) {
+  const s = strip(raw);
+  let month = null;
+  [MONTHS, MOIS].forEach(list => list.forEach((m, k) => { if (s.includes(m) || s.includes(m.slice(0, 3) + " ") || s.endsWith(m.slice(0, 3))) month ??= k + 1; }));
+  const nums = (s.match(/\d+/g) || []).map(Number);
+  const year = nums.find(n => n > 1900);
+  const small = nums.filter(n => n <= 31);
+  let day;
+  if (month) day = small[0];
+  else if (small.length >= 2) { day = small[0]; month = small[1]; }
+  if (!day || !month) return raw;
+  return year ? `${day}-${month}-${year}` : `${day}-${month}`;
+}
+function go() { state.i++; save(); render(); window.scrollTo(0, 0); }
+function screen(html) { $app.style.animation = "none"; void $app.offsetWidth; $app.style.animation = ""; $app.innerHTML = html; }
+
+/* ---------- screens ---------- */
+let tick = null;
+function render() {
+  clearInterval(tick); clearTimeout(tick);
+  const step = STEPS[state.i];
+  const n = QUESTIONS.indexOf(step);
+  document.getElementById("progress").textContent = n >= 0 ? `${n + 1} of ${QUESTIONS.length}` : "";
+  ({ intro, q: question, reveal1, reveal2, road, end })[step.type](step);
+}
+
+function intro() {
+  screen(`
+    <p class="label">7 October</p>
+    <h1>Happy birthday, Sixtine.</h1>
+    <p>Something is planned for you today, but you'll have to earn it.</p>
+    <p>Three riddles, a few questions about us, and one last part for later. Type every answer yourself. If you get stuck, a hint shows up after a wrong try.</p>
+    <p class="soft">About ten minutes. In English, obviously.</p>
+    <button class="wide" id="b">Begin</button>`);
+  document.getElementById("b").onclick = go;
+}
+
+function question(step) {
+  let tries = 0;
+  screen(`
+    <p class="label">${step.chapter}</p>
+    <p class="q">${step.text}</p>
+    <form id="f" autocomplete="off">
+      <input id="a" placeholder="${step.date ? "day and month" : "your answer"}" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <button>OK</button>
+    </form>
+    <div class="note" id="note"></div>
+    <div id="hints"></div>`);
+  const input = document.getElementById("a");
+  input.focus({ preventScroll: true });
+  document.getElementById("f").onsubmit = async e => {
+    e.preventDefault();
+    const v = input.value.trim();
+    if (!v) return;
+    const cands = [step.date ? parseDate(v) : v];
+    if (step.any) {
+      const w = strip(v).split(/[^a-z0-9]+/).filter(Boolean);
+      w.forEach((x, k) => { cands.push(x); if (w[k + 1]) cands.push(x + w[k + 1]); });
+    }
+    const hs = await Promise.all(cands.map(hash));
+    const note = document.getElementById("note");
+    if (hs.some(h => H[step.key].includes(h))) {
+      input.classList.add("right"); input.disabled = true;
+      note.className = "note yes"; note.textContent = "Yes.";
+      setTimeout(go, 900);
+    } else {
+      tries++;
+      note.className = "note";
+      note.textContent = ["Not quite.", "No, try again.", "Still no."][Math.min(tries - 1, 2)];
+      input.classList.remove("nudge"); void input.offsetWidth; input.classList.add("nudge");
+      document.getElementById("hints").innerHTML = step.hints.slice(0, Math.min(tries, step.hints.length)).map(t => `<div class="hint">${t}</div>`).join("");
+      input.select();
+    }
+  };
+}
+
+function reveal1() {
+  screen(`
+    <p class="label">Chapter one, solved</p>
+    <h2>This evening's table</h2>
+    <p class="words"><span>French</span><span>Cosy</span><span>Gastronomic</span></p>
+    <p>A cosy French gastronomic restaurant. That's all you get. Where it is stays a secret.</p>
+    <p class="soft">Now, let's see how well you remember us.</p>
+    <button class="wide" id="b">Chapter two</button>`);
+  document.getElementById("b").onclick = go;
+}
+
+function reveal2() {
+  screen(`
+    <p class="label">Chapter two, solved</p>
+    <h2>Did you notice?</h2>
+    <p>7 October is your birthday, and it's also the day of our very first kiss.</p>
+    <p>So today you turn 21, and it's exactly three years since that kiss. Two anniversaries on the same day.</p>
+    <p>And on 14 November, it will be three years together.</p>
+    <button class="wide" id="b">Chapter three</button>`);
+  document.getElementById("b").onclick = go;
+}
+
+let route = null;
+async function loadRoute() {
+  if (route) return route;
+  try {
+    const r = await fetch("route.json", { cache: "no-store" });
+    if (r.ok) route = await r.json();
+  } catch {}
+  return route;
+}
+
+function road() {
+  if (now() < RELEASE) return countdown();
+  if (!route) {
+    screen(`<p class="label">Chapter three</p><h2>Almost…</h2><p class="soft" id="w">Getting the road ready.</p>`);
+    loadRoute().then(r => {
+      if (r) render();
+      else { document.getElementById("w").textContent = "Not quite ready yet. This page will try again by itself."; tick = setTimeout(render, 20000); }
+    });
+    return;
+  }
+  const k = state.navStep;
+  if (k < 0) {
+    screen(`
+      <p class="label">Chapter three</p>
+      <h2>You are the navigator.</h2>
+      <p>No map, no address. Read each line out loud to the driver, and tap <i>done</i> once it's done. The next line only appears then.</p>
+      <button class="wide" id="b">We're in the car</button>`);
+    document.getElementById("b").onclick = () => { state.navStep = 0; save(); render(); };
+    return;
+  }
+  const s = route.steps[k];
+  const last = k === route.steps.length - 1;
+  screen(`
+    <p class="label">${k + 1} of ${route.steps.length}</p>
+    <div class="arrow">${s.arrow}</div>
+    <p class="step">${s.text}</p>
+    <p class="soft">${s.dist}</p>
+    <div class="row">
+      ${k > 0 ? `<button class="back" id="back">←</button>` : ""}
+      <button id="done">${last ? "We're here" : "done"}</button>
+    </div>`);
+  document.getElementById("done").onclick = () => {
+    if (last) { state.navStep = -1; go(); return; }
+    state.navStep++; save(); render(); window.scrollTo(0, 0);
+  };
+  const b = document.getElementById("back");
+  if (b) b.onclick = () => { state.navStep--; save(); render(); };
+}
+
+function countdown() {
+  screen(`
+    <p class="label">Chapter three</p>
+    <h2>Not yet.</h2>
+    <p>The last part opens this evening at seven.</p>
+    <div class="clock" id="c"></div>
+    <p class="soft">Come back then. It will be waiting for you.</p>`);
+  const pad = n => String(n).padStart(2, "0");
+  const draw = () => {
+    const left = Math.max(0, RELEASE - now());
+    if (left === 0) { render(); return; }
+    const t = Math.floor(left / 1000);
+    document.getElementById("c").textContent = `${pad(Math.floor(t / 3600))}:${pad(Math.floor(t / 60) % 60)}:${pad(t % 60)}`;
+  };
+  draw();
+  tick = setInterval(draw, 1000);
+}
+
+function end() {
+  screen(`
+    <p class="label">The end</p>
+    <h1>Look up.</h1>
+    <p>You found it. Happy 21st birthday, Sixtine.</p>
+    <div class="letter">Je t'aime 16. Tu m'as énormément manqué, je suis content qu'on se retrouve.
+Merci d'être venue et d'avoir pu réserver ta soirée pour qu'on puisse la passer ensemble.
+Je t'aime.</div>
+    <p>Louis</p>`);
+}
+
+document.getElementById("reset").onclick = () => {
+  if (!confirm("Start again from the beginning?")) return;
+  state = { i: 0, navStep: -1 }; save(); render();
+};
+document.addEventListener("visibilitychange", () => { if (!document.hidden) syncClock(); });
+syncClock().then(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+name: Deploy
+
+# The directions live in the ROUTE_B64 secret and are only added to the site
+# from 18:00 Paris time on 7 October 2026. Several scheduled runs in case one is late.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      check:
+        description: "Publish a fingerprint of the secret (not the route) to verify it"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "0,20,40 16 7 10 *"
+    - cron: "0,15,30,45 17 7 10 *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build site
+        env:
+          ROUTE_B64: ${{ secrets.ROUTE_B64 }}
+          CHECK: ${{ inputs.check }}
+        run: |
+          mkdir _site
+          cp index.html _site/
+          if [ "$(date -u +%s)" -ge "$(date -u -d 2026-10-07T16:00:00Z +%s)" ]; then
+            echo "$ROUTE_B64" | base64 -d > _site/route.json
+            echo "Route released"
+          else
+            echo "Route still hidden"
+          fi
+          if [ "$CHECK" = "true" ]; then
+            echo "$ROUTE_B64" | base64 -d | sha256sum | cut -c1-16 > _site/check.txt
+          fi
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
