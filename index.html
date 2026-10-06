@@ -7,94 +7,110 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #f3ece0;
-    --ink: #2b2420;
-    --soft: #7a6c60;
-    --line: #d9cdbb;
-    --accent: #8c2f2a;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --paper: #1c1815;
-      --ink: #ece2d2;
-      --soft: #a39482;
-      --line: #3b332c;
-      --accent: #d9926f;
-    }
+    --bg: #fff4f5;
+    --card: #ffffff;
+    --ink: #3b2a2f;
+    --soft: #9a7f87;
+    --pink: #e8475f;
+    --pink-2: #ffd9df;
+    --pink-3: #ffeef1;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
   body {
     min-height: 100dvh;
-    background: var(--paper);
+    background: var(--bg);
     color: var(--ink);
-    font: 20px/1.5 "EB Garamond", Georgia, serif;
-    -webkit-font-smoothing: antialiased;
-    padding: 28px 22px 60px;
+    font: 18px/1.55 Nunito, system-ui, sans-serif;
+    padding: 20px 16px 48px;
+    overflow-x: hidden;
   }
-  .page { max-width: 32rem; margin: 0 auto; }
-  .top {
-    display: flex; justify-content: space-between; align-items: baseline;
-    font-style: italic; color: var(--soft); font-size: 17px;
-    border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 44px;
+  .page { max-width: 30rem; margin: 0 auto; position: relative; z-index: 1; }
+  .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+  .brand { font-family: Pacifico, cursive; color: var(--pink); font-size: 22px; }
+  .hearts { display: flex; gap: 3px; font-size: 13px; color: var(--pink-2); }
+  .hearts .on { color: var(--pink); }
+
+  main {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 30px 24px 26px;
+    box-shadow: 0 10px 30px -12px rgba(232, 71, 95, .25);
+    animation: pop .45s cubic-bezier(.2, .9, .3, 1.2) both;
   }
-  main { animation: in .6s ease both; }
-  @keyframes in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
 
-  .label { font-style: italic; color: var(--accent); font-size: 18px; margin: 0 0 6px; }
-  h1 { font-weight: 500; font-size: 40px; line-height: 1.1; margin: 0 0 22px; }
-  h2 { font-weight: 500; font-size: 30px; line-height: 1.2; margin: 0 0 18px; }
-  p { margin: 0 0 16px; }
-  .soft { color: var(--soft); font-size: 18px; }
-  .q { font-size: 23px; line-height: 1.45; margin: 0 0 30px; white-space: pre-line; }
+  .label { display: inline-block; background: var(--pink-3); color: var(--pink); font-weight: 700; font-size: 14px; padding: 4px 12px; border-radius: 999px; margin: 0 0 16px; }
+  .hb { font-family: Pacifico, cursive; color: var(--pink); font-size: 46px; line-height: 1.2; margin: 0 0 10px; font-weight: 400; }
+  h1 { font-weight: 800; font-size: 34px; line-height: 1.15; margin: 0 0 18px; }
+  h2 { font-weight: 800; font-size: 26px; line-height: 1.2; margin: 0 0 14px; }
+  p { margin: 0 0 14px; }
+  .soft { color: var(--soft); font-size: 16px; }
+  .q { font-size: 20px; font-weight: 600; line-height: 1.5; margin: 0 0 24px; white-space: pre-line; }
 
-  form { display: flex; align-items: flex-end; gap: 14px; }
+  form { display: flex; gap: 8px; }
   input {
     flex: 1; min-width: 0;
-    font: inherit; font-size: 22px; color: var(--ink);
-    background: transparent; border: 0; border-bottom: 1.5px solid var(--ink);
-    border-radius: 0; padding: 6px 2px; outline: none;
+    font: inherit; font-size: 18px; color: var(--ink);
+    background: var(--pink-3); border: 2px solid transparent; border-radius: 14px;
+    padding: 12px 14px; outline: none; transition: border-color .2s;
   }
-  input::placeholder { color: var(--soft); opacity: .6; font-style: italic; }
-  input.right { color: var(--accent); border-color: var(--accent); }
+  input:focus { border-color: var(--pink-2); }
+  input::placeholder { color: var(--soft); opacity: .7; }
+  input.right { border-color: var(--pink); color: var(--pink); font-weight: 700; }
   button {
-    font: inherit; font-size: 19px; cursor: pointer;
-    background: var(--ink); color: var(--paper);
-    border: 0; border-radius: 3px; padding: 9px 18px;
+    font: inherit; font-weight: 700; font-size: 17px; cursor: pointer;
+    background: var(--pink); color: #fff;
+    border: 0; border-radius: 14px; padding: 12px 18px;
+    transition: transform .1s;
   }
-  button:active { opacity: .8; }
-  button.wide { display: block; width: 100%; padding: 14px; margin-top: 30px; }
-  button.link { background: none; color: var(--soft); padding: 0; font-size: 16px; font-style: italic; text-decoration: underline; text-underline-offset: 3px; }
+  button:active { transform: scale(.96); }
+  button.wide { display: block; width: 100%; padding: 15px; margin-top: 22px; }
+  button.link { background: none; color: var(--soft); padding: 0; font-weight: 400; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
 
-  .note { min-height: 28px; margin-top: 14px; font-style: italic; color: var(--soft); }
-  .note.yes { color: var(--accent); }
-  .hint { margin-top: 10px; font-style: italic; color: var(--soft); font-size: 18px; }
-  .hint::before { content: "Hint: "; color: var(--accent); }
+  .note { min-height: 26px; margin-top: 12px; color: var(--soft); font-weight: 600; }
+  .note.yes { color: var(--pink); }
+  .hint { margin-top: 10px; background: var(--pink-3); border-radius: 12px; padding: 9px 13px; font-size: 16px; }
+  .hint::before { content: "♥\FE0E  "; color: var(--pink); }
+  .h { color: var(--pink); }
   .nudge { animation: nudge .35s; }
-  @keyframes nudge { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  @keyframes nudge { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 
-  .words { margin: 0 0 22px; font-size: 24px; font-style: italic; color: var(--accent); }
-  .words span + span::before { content: " · "; color: var(--soft); }
+  .words { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+  .words span { background: var(--pink); color: #fff; font-weight: 700; border-radius: 999px; padding: 6px 14px; }
 
-  .clock { font-size: 64px; font-weight: 500; letter-spacing: .02em; font-variant-numeric: tabular-nums lining-nums; margin: 10px 0 18px; }
+  .clock { display: flex; gap: 8px; margin: 18px 0 20px; }
+  .clock div { flex: 1; background: var(--pink-3); border-radius: 16px; padding: 12px 0 8px; text-align: center; }
+  .clock b { display: block; font-size: 36px; font-weight: 800; color: var(--pink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .clock small { color: var(--soft); font-size: 13px; }
 
-  .arrow { font-size: 72px; line-height: 1; color: var(--accent); margin: 0 0 18px; }
-  .step { font-size: 27px; line-height: 1.35; margin: 0 0 10px; }
-  .step b { font-weight: 600; }
-  .row { display: flex; gap: 10px; margin-top: 34px; }
-  .row button { flex: 1; padding: 14px; }
-  .row button.back { flex: 0 0 64px; background: none; color: var(--ink); border: 1px solid var(--line); }
+  .arrow { width: 84px; height: 84px; border-radius: 50%; background: var(--pink-3); color: var(--pink); display: grid; place-items: center; font-size: 46px; font-weight: 800; margin: 0 0 18px; }
+  .step { font-size: 24px; font-weight: 600; line-height: 1.4; margin: 0 0 8px; }
+  .step em { font-style: normal; color: var(--pink); }
+  .step b { font-weight: 800; }
+  .row { display: flex; gap: 10px; margin-top: 26px; }
+  .row button { flex: 1; padding: 15px; }
+  .row button.back { flex: 0 0 60px; background: var(--pink-3); color: var(--pink); }
 
-  .letter { font-style: italic; font-size: 22px; line-height: 1.55; border-left: 2px solid var(--accent); padding-left: 16px; margin: 26px 0; white-space: pre-line; }
-  footer { max-width: 32rem; margin: 60px auto 0; }
+  .letter { background: var(--pink-3); border-radius: 18px; padding: 18px 20px; margin: 20px 0 16px; font-size: 18px; line-height: 1.6; white-space: pre-line; }
+  .sign { font-family: Pacifico, cursive; color: var(--pink); font-size: 26px; margin: 0; }
+  footer { max-width: 30rem; margin: 26px auto 0; text-align: center; position: relative; z-index: 1; }
+
+  /* floating hearts in the background */
+  .float { position: fixed; bottom: -40px; color: var(--pink); opacity: .13; pointer-events: none; z-index: 0; animation: rise linear infinite; }
+  @keyframes rise { to { transform: translateY(-115vh) rotate(25deg); } }
+  /* heart burst on a right answer */
+  .burst { position: fixed; pointer-events: none; z-index: 5; color: var(--pink); animation: burst 1s ease-out forwards; }
+  @keyframes burst { to { transform: translate(var(--x), var(--y)) scale(.6); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .float, .burst { display: none; } }
 </style>
 </head>
 <body>
 <div class="page">
-  <div class="top"><span>For Sixtine</span><span id="progress"></span></div>
+  <div class="top"><span class="brand">For Sixtine</span><span class="hearts" id="progress"></span></div>
   <main id="app"></main>
 </div>
 <footer><button class="link" id="reset">start over</button></footer>
@@ -208,20 +224,40 @@ function parseDate(raw) {
 function go() { state.i++; save(); render(); window.scrollTo(0, 0); }
 function screen(html) { $app.style.animation = "none"; void $app.offsetWidth; $app.style.animation = ""; $app.innerHTML = html; }
 
+function burst(el) {
+  const r = el.getBoundingClientRect();
+  for (let k = 0; k < 14; k++) {
+    const h = document.createElement("span");
+    h.className = "burst"; h.textContent = "♥\uFE0E";
+    const a = Math.random() * Math.PI * 2, d = 50 + Math.random() * 90;
+    h.style.cssText = `left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;font-size:${12 + Math.random() * 16}px;--x:${Math.cos(a) * d}px;--y:${Math.sin(a) * d - 40}px`;
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 1100);
+  }
+}
+for (let k = 0; k < 10; k++) {
+  const h = document.createElement("span");
+  h.className = "float"; h.textContent = "♥\uFE0E";
+  h.style.cssText = `left:${Math.random() * 100}vw;font-size:${16 + Math.random() * 26}px;animation-duration:${14 + Math.random() * 14}s;animation-delay:${-Math.random() * 28}s`;
+  document.body.appendChild(h);
+}
+
 /* ---------- screens ---------- */
 let tick = null;
 function render() {
   clearInterval(tick); clearTimeout(tick);
   const step = STEPS[state.i];
   const n = QUESTIONS.indexOf(step);
-  document.getElementById("progress").textContent = n >= 0 ? `${n + 1} of ${QUESTIONS.length}` : "";
+  const done = n >= 0 ? n : QUESTIONS.filter(q => STEPS.indexOf(q) < state.i).length;
+  document.getElementById("progress").innerHTML = QUESTIONS.map((_, k) => `<span class="${k < done ? "on" : ""}">♥&#xFE0E;</span>`).join("");
   ({ intro, q: question, reveal1, reveal2, road, end })[step.type](step);
 }
 
 function intro() {
   screen(`
     <p class="label">7 October</p>
-    <h1>Happy birthday, Sixtine.</h1>
+    <p class="hb">Happy Birthday</p>
+    <h1>my Sixtine <span class="h">♥&#xFE0E;</span></h1>
     <p>Something is planned for you today, but you'll have to earn it.</p>
     <p>Three riddles, a few questions about us, and one last part for later. Type every answer yourself. If you get stuck, a hint shows up after a wrong try.</p>
     <p class="soft">About ten minutes. In English, obviously.</p>
@@ -255,12 +291,13 @@ function question(step) {
     const note = document.getElementById("note");
     if (hs.some(h => H[step.key].includes(h))) {
       input.classList.add("right"); input.disabled = true;
-      note.className = "note yes"; note.textContent = "Yes.";
+      note.className = "note yes"; note.innerHTML = 'Yes! <span class="h">♥&#xFE0E;</span>';
+      burst(input);
       setTimeout(go, 900);
     } else {
       tries++;
       note.className = "note";
-      note.textContent = ["Not quite.", "No, try again.", "Still no."][Math.min(tries - 1, 2)];
+      note.textContent = ["Not quite…", "Nope, try again.", "Still no. Look at the hint!"][Math.min(tries - 1, 2)];
       input.classList.remove("nudge"); void input.offsetWidth; input.classList.add("nudge");
       document.getElementById("hints").innerHTML = step.hints.slice(0, Math.min(tries, step.hints.length)).map(t => `<div class="hint">${t}</div>`).join("");
       input.select();
@@ -271,10 +308,10 @@ function question(step) {
 function reveal1() {
   screen(`
     <p class="label">Chapter one, solved</p>
-    <h2>This evening's table</h2>
+    <h2>This evening's table <span class="h">♥&#xFE0E;</span></h2>
     <p class="words"><span>French</span><span>Cosy</span><span>Gastronomic</span></p>
     <p>A cosy French gastronomic restaurant. That's all you get. Where it is stays a secret.</p>
-    <p class="soft">Now, let's see how well you remember us.</p>
+    <p class="soft">Now, let's see how well you remember us…</p>
     <button class="wide" id="b">Chapter two</button>`);
   document.getElementById("b").onclick = go;
 }
@@ -345,13 +382,14 @@ function countdown() {
     <h2>Not yet.</h2>
     <p>The last part opens this evening at seven.</p>
     <div class="clock" id="c"></div>
-    <p class="soft">Come back then. It will be waiting for you.</p>`);
+    <p class="soft">Come back then. It will be waiting for you <span class="h">♥&#xFE0E;</span></p>`);
   const pad = n => String(n).padStart(2, "0");
   const draw = () => {
     const left = Math.max(0, RELEASE - now());
     if (left === 0) { render(); return; }
     const t = Math.floor(left / 1000);
-    document.getElementById("c").textContent = `${pad(Math.floor(t / 3600))}:${pad(Math.floor(t / 60) % 60)}:${pad(t % 60)}`;
+    document.getElementById("c").innerHTML = [[Math.floor(t / 3600), "hours"], [Math.floor(t / 60) % 60, "minutes"], [t % 60, "seconds"]]
+      .map(([v, u]) => `<div><b>${pad(v)}</b><small>${u}</small></div>`).join("");
   };
   draw();
   tick = setInterval(draw, 1000);
@@ -360,12 +398,13 @@ function countdown() {
 function end() {
   screen(`
     <p class="label">The end</p>
-    <h1>Look up.</h1>
+    <p class="hb">Look up!</p>
     <p>You found it. Happy 21st birthday, Sixtine.</p>
     <div class="letter">Je t'aime 16. Tu m'as énormément manqué, je suis content qu'on se retrouve.
 Merci d'être venue et d'avoir pu réserver ta soirée pour qu'on puisse la passer ensemble.
 Je t'aime.</div>
-    <p>Louis</p>`);
+    <p class="sign">Louis</p>`);
+  for (let k = 0; k < 4; k++) setTimeout(() => burst(document.querySelector(".hb")), k * 350);
 }
 
 document.getElementById("reset").onclick = () => {
